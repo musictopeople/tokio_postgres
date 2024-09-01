@@ -33,3 +33,5 @@ The table stucture is the exact same as the getting started example.
 Now go ahead and jump in the app directory, run the application, and see the greeting.
 
 `cargo run`
+
+don't forget to set the path for the diesel cli in the diesel.toml file.
