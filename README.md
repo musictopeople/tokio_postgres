@@ -28,7 +28,7 @@ Go ahead and use diesel to run the migration which will add the greeting to the 
 
 `diesel migration run`
 
-The table stucture as the getting started example.
+The table stucture is the exact same as the getting started example.
 
 Now go ahead and run the application and see the greeting.
 
