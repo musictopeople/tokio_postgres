@@ -30,6 +30,6 @@ Go ahead and use diesel to run the migration which will add the greeting to the 
 
 The table stucture is the exact same as the getting started example.
 
-Now go ahead and run the application and see the greeting.
+Now go ahead and jump in the app directory, run the application, and see the greeting.
 
 `cargo run`
