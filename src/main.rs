@@ -2,6 +2,7 @@ use dotenv::dotenv;
 use tokio_postgres::{Error, NoTls};
 
 mod constants;
+mod queries;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -18,7 +19,7 @@ async fn main() -> Result<(), Error> {
         }
     });
 
-    let rows = client.query(constants::SELECT_POST_BY_ID, &[&1]).await?;
+    let rows = client.query(queries::SELECT_POST_BY_ID, &[&1]).await?;
 
     let value: &str = rows[0].get(0);
     println!("\n{}!!!!!\n", value); // Create a new Actix Web application
