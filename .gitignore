@@ -9,3 +9,6 @@ Cargo.lock
 !diesel_cli/Cargo.lock
 *.env
 *.snap.new
+
+# MAC OS
+.DS_Store
