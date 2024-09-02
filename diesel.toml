@@ -7,4 +7,4 @@ custom_type_derives = ["diesel::query_builder::QueryId", "Clone"]
 
 [migrations_directory]
 # Add your path below so diesel can find your migrations directory
-dir = "add your path here..../tokio_postgres/migrations"
+dir = "./migrations"
