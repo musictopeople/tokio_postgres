@@ -8,25 +8,35 @@ Next Click on the sweet Diesel logo to snag the diesel CLI and get up to speed.
 
 I use a Linux machine so feel free to tweak these steps but the way I run this POC is by doing the following.
 
-First I start docker.
+If you don't have docker on your computer now would be a great time to get it. 
+
+https://www.docker.com/
+
+make sure you have docker on your machine.
+
+`docker -v`
+
+cd to your app directory and open the terminal in your IDE
+
+start docker.
 
 `sudo systemctl start docker`
 
-I make sure my docker daemon is running
+check and see if the docker daemon is running
 
 `sudo docker ps -a`
 
-Then I build and start the postgres db docker container
+build and start the postgres db docker container
 
 `sudo docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=changeit -d postgres-db`
 
-Go ahead and use diesel to run the migration which will add the greeting to the db.
+use diesel to run the migration which will add the greeting to the first row of the db.
 
 `diesel migration run`
 
 The table stucture is the exact same as the getting started example.
 
-Now go ahead and jump in the app directory, run the application, and see the greeting.
+run the application, and see the greeting.
 
 `cargo run`
 
