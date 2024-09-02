@@ -40,4 +40,4 @@ run the application, and see the greeting.
 
 `cargo run`
 
-don't forget to set the path for the diesel cli in the diesel.toml file.
+don't forget to set the path for the diesel cli in the diesel.toml file. I sometimes forget to do this and wonder for a second why my diesel migration commands don't work.
