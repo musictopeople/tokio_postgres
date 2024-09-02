@@ -28,7 +28,7 @@ check and see if the docker daemon is running
 
 build and start the postgres db docker container
 
-`sudo docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=changeit -d postgres-db`
+`docker compose up`
 
 use diesel to run the migration which will add the greeting to the first row of the db.
 
