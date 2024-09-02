@@ -16,13 +16,9 @@ I make sure my docker daemon is running
 
 `sudo docker ps -a`
 
-Next I build the docker container
+Then I build and start the postgres db docker container
 
-`sudo docker build -t postgres-db`
-
-Then I start the docker container
-
-`sudo docker -d postgres-db`
+`sudo docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=changeit -d postgres-db`
 
 Go ahead and use diesel to run the migration which will add the greeting to the db.
 
