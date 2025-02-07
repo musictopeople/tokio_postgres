@@ -1,27 +1,25 @@
-use dotenv::dotenv;
-use tokio_postgres::{Error, NoTls};
-
 mod constants;
+mod db;
+mod handlers;
 mod queries;
+mod routes;
+
+use db::create_db_client;
+use routes::create_router;
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
-    // load environment variables from `.env` file
-    dotenv().ok();
-    // set temporary variable to connect db using url
-    let database_url = std::env::var("DATABASE_URL").expect(constants::DATABASE_CONNECTION_ERROR);
-    // set url for postgres db
-    let (client, connection) = tokio_postgres::connect(&database_url, NoTls).await?;
+async fn main() -> Result<(), tokio_postgres::Error> {
+    dotenv::dotenv().ok();
 
-    tokio::spawn(async move {
-        if let Err(e) = connection.await {
-            eprintln!("connection error: {}", e);
-        }
-    });
+    let shared_client = create_db_client().await?;
+    let server = create_router(shared_client);
 
-    let rows = client.query(queries::SELECT_POST_BY_ID, &[&1]).await?;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+        .await
+        .unwrap();
 
-    let value: &str = rows[0].get(0);
-    println!("\n{}!!!!!\n", value);
+    println!("server running on http:localhost:8080");
+
+    axum::serve(listener, server).await.unwrap();
     Ok(())
 }
