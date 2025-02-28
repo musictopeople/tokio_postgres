@@ -3,6 +3,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
+use std::fmt::Display;
 
 #[derive(Debug)]
 pub enum ApiError {
@@ -11,7 +12,7 @@ pub enum ApiError {
     Internal,
 }
 
-impl std::fmt::Display for ApiError {
+impl Display for ApiError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             ApiError::Database(e) => write!(f, "Database error: {}", e),
