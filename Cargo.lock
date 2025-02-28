@@ -1038,6 +1038,7 @@ dependencies = [
  "axum",
  "diesel",
  "dotenv",
+ "serde",
  "tokio",
  "tokio-postgres",
 ]
