@@ -1,12 +1,20 @@
 [package]
-name = "tokio_postgres"
+name = "tokio_postgres_poc"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7"
+axum = "0.8.4"
+axum-prometheus = "0.8.0"
+axum-test = "17.3.0"
+deadpool-postgres = "0.14.1"
 diesel = { version = "2.2.0", features = ["postgres"] }
 dotenv = "0.15.0"
-serde = { version = "1.0", features = ["derive"] }
-tokio = {version="1.39.3", features = ["rt", "full"]}
-tokio-postgres = "0.7.11"
+metrics-exporter-prometheus = "0.17.2"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.138"
+tokio = {version="1.46.1", features = ["rt", "full"]}
+tokio-postgres = "0.7.13"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+anyhow = "1.0.98"

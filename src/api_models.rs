@@ -1,16 +1,16 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct PostRequest {
-    pub(crate) title: String,
-    pub(crate) body: String,
-    pub(crate) published: bool,
+    pub title: String,
+    pub body: String,
+    pub published: bool,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 pub struct Response {
-    pub(crate) id: i32,
-    pub(crate) title: String,
-    pub(crate) body: String,
-    pub(crate) published: bool,
+    pub id: i32,
+    pub title: String,
+    pub body: String,
+    pub published: bool,
 }

@@ -1,15 +1,23 @@
+use crate::db_handler::{delete_post, update_post};
 use crate::{
-    db::SharedClient,
-    handlers::{create_post, get_post},
+    db::DbPool,
+    db_handler::{create_post, get_post},
 };
 use axum::{
-    routing::{get, post},
+    routing::{delete, get, post, put},
     Router,
 };
+use axum_prometheus::metrics_exporter_prometheus::PrometheusHandle;
 
-pub fn create_router(shared_client: SharedClient) -> Router {
+pub fn create_router(pool: DbPool, prometheus_handle: PrometheusHandle) -> Router {
     Router::new()
         .route("/post", get(get_post))
         .route("/post", post(create_post))
-        .with_state(shared_client)
+        .route("/post/{id}", put(update_post))
+        .route("/post/{id}", delete(delete_post))
+        .route(
+            "/metrics",
+            get(|| async move { prometheus_handle.render() }),
+        )
+        .with_state(pool)
 }

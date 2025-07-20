@@ -1,28 +1,52 @@
 mod api_models;
-mod constants;
+mod config;
 mod db;
+mod db_handler;
 mod error;
-mod handlers;
+mod metrics;
 mod queries;
 mod routes;
+mod shutdown;
 
-use db::create_db_client;
+use anyhow::{Context, Result};
+use config::Config;
+use tracing::info;
+
+use db::create_pool;
+use metrics::setup_metrics;
 use routes::create_router;
+use shutdown::shutdown_signal;
 
 #[tokio::main]
-async fn main() -> Result<(), tokio_postgres::Error> {
-    dotenv::dotenv().ok();
+async fn main() -> Result<()> {
+    tracing_subscriber::fmt()
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
 
-    let shared_client = create_db_client().await?;
+    let config = Config::from_env().context("Failed to load configuration")?;
 
-    let server = create_router(shared_client);
+    info!("Starting server with config: {:?}", config);
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    let pool = create_pool(&config.database_url)
         .await
-        .unwrap();
+        .map_err(|e| anyhow::anyhow!("Failed to create database pool: {}", e))?;
 
-    println!("server running on http:localhost:8080");
+    info!("Database pool created successfully");
 
-    axum::serve(listener, server).await.unwrap();
+    let (prometheus_layer, prometheus_handle) = setup_metrics();
+    let app = create_router(pool, prometheus_handle).layer(prometheus_layer);
+
+    let listener = tokio::net::TcpListener::bind(&config.server_addr)
+        .await
+        .with_context(|| format!("Failed to bind to address {}", config.server_addr))?;
+
+    info!("Server listening on http://{}", config.server_addr);
+
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await
+        .context("Server error")?;
+
+    info!("Server shutdown complete");
     Ok(())
 }
